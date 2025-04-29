@@ -7,7 +7,7 @@ const router = createRouter({
     {
       path : '/',
       name : 'Login',
-      component : () => import('../views/HomeView.vue')
+      component : () => import('../views/Login.vue')
     },
     {
       path: '/main',
