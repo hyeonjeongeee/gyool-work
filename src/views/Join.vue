@@ -1,7 +1,7 @@
 
 <template>
-  <div class="login-div">
-    <div class="login-form">
+  <div class="join-div">
+    <div class="join-form">
       <div class="logo-div">
         <el-image style="width: 100%; height: 100%" :src="logo" fit="contain"/>
       </div>
@@ -14,15 +14,16 @@
           <div class="label">비밀번호</div>
           <el-input v-model="form.pw" type="password" placeholder="비밀번호를 입력하세요." show-password/>
         </div>
-        <div class="row-space-between">
-          <el-checkbox v-model="checked">ID 기억하기</el-checkbox>
-          <el-link  @click="findPassword" underline="hover" type="default">비밀번호 찾기</el-link>
+        <div class="input-div">
+          <div class="label">비밀번호 확인</div>
+          <el-input v-model="form.pwChk" type="password" placeholder="비밀번호 확인을 입력하세요." show-password/>
+        </div>
+        <div class="input-div">
+          <div class="label">이름</div>
+          <el-input v-model="form.name" placeholder="이름을 입력하세요." />
         </div>
         <div>
-          <el-button class="bg-gyool-green login-btn" @click="login" style="width: 100%">로그인</el-button>
-        </div>
-        <div>
-          <el-button class="bg-gyool-oatmeal register-btn" @click="register" style="width: 100%">회원가입</el-button>
+          <el-button class="bg-gyool-green register-btn" @click="register" style="width: 100%">회원가입</el-button>
         </div>
       </el-form>
     </div>
@@ -37,27 +38,22 @@
   import { ref } from 'vue'
   import { useRouter } from 'vue-router'
 
-  const router = useRouter()
-  const checked = ref(false);
   const form = reactive({
     id :'',
-    pw:''
+    pw:'',
+    pwChk:'',
+    name:''
   })
 
-  const login = ()=>{
-    console.log("로그인");
-  }
+
   const register = ()=>{
     console.log("회원가입");
-    router.push({ name: 'Join' })
   }
-  const findPassword= () =>{
-    console.log("비밀번호 찾기")
-  }
+
   </script>
 
 <style scoped>
-.login-div {
+.join-div {
   width: 100%;
   height: 100%;
   display: flex;
@@ -69,12 +65,12 @@
   width: 100%;
   margin-bottom: 40px;
  }
-.login-form{
+.join-form{
   background-color: #ffffff;
   display: flex ;
   flex-direction: column;
   align-items: stretch;
-  height: 598px;
+  height: 692px;
   width: 500px;
   padding: 60px 50px 70px 50px;
   border-radius: 20px;
@@ -86,24 +82,14 @@
 .input-div{
   margin-bottom: 20px;
 }
-.login-btn{
+
+.register-btn {
   color: #ffffff;
   font-weight: bold;
-  margin-bottom: 13px;
   height: 44px;
+  margin-top: 20px;
 }
-.register-btn {
-  color: #000000;
-  font-weight: bold;
-  height: 44px;
-}
-.row-space-between{
-  display: flex;
-  height: 24.41px;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 40px;
-}
+
 .el-input{
   height: 44px;
 }

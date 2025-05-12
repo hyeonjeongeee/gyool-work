@@ -5,6 +5,7 @@
   height: 100vh;
   margin: 0 auto;
   font-weight: normal;
+  font-size: 14px;
   background-color: #F9FAFC;
 }
 #app .common-layout{
