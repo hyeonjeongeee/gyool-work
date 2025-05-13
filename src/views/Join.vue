@@ -33,12 +33,18 @@
 
   <script setup lang="ts">
   import { reactive } from 'vue'
-
+  import { ElMessage } from 'element-plus'
   import logo from '@/assets/logo/gyool1.png';
-  import { ref } from 'vue'
-  import { useRouter } from 'vue-router'
 
-  const form = reactive({
+
+  interface formData {
+    id: string;
+    pw: string;
+    pwChk: string;
+    name: string;
+  }
+
+  const form = reactive<formData>({
     id :'',
     pw:'',
     pwChk:'',
@@ -47,9 +53,28 @@
 
 
   const register = ()=>{
-    console.log("회원가입");
+    if(formCheck()){
+      console.log("회원가입");
+    }
   }
 
+  function formCheck(): boolean {
+    const warn = (message: string): boolean => {
+      ElMessage({
+        type: 'warning',
+        message
+      })
+      return false
+    }
+
+    if (!form.id) return warn('아이디를 입력하세요.')
+    if (!form.pw) return warn('비밀번호를 입력하세요.')
+    if (!form.pwChk) return warn('비밀번호 확인을 입력하세요.')
+    if (form.pw !== form.pwChk) return warn('비밀번호가 일치하지 않습니다.')
+    if (!form.name) return warn('이름을 입력하세요.')
+
+    return true
+  }
   </script>
 
 <style scoped>
