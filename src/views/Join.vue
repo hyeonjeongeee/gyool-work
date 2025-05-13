@@ -35,7 +35,7 @@
   import { reactive } from 'vue'
   import { ElMessage } from 'element-plus'
   import logo from '@/assets/logo/gyool1.png';
-
+  import {useRouter} from "vue-router";
 
   interface formData {
     id: string;
@@ -51,10 +51,15 @@
     name:''
   })
 
-
+  const router = useRouter();
   const register = ()=>{
     if(formCheck()){
-      console.log("회원가입");
+      ElMessage({
+        type: 'success',
+        message:'회원가입이 완료되었습니다.'
+      })
+
+      router.push({ name: 'Login' })
     }
   }
 
