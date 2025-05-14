@@ -30,6 +30,11 @@ const router = createRouter({
           name: 'CompanyCreate',
           component: () => import('../views/CompanyCreate.vue'),
         },
+        {
+          path: 'companySearch',
+          name: 'CompanySearch',
+          component: () => import('../views/CompanySearch.vue'),
+        },
       ]
     },
   ],
