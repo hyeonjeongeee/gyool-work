@@ -14,17 +14,21 @@ const router = createRouter({
       name : 'Join',
       component : () => import('../views/Join.vue')
     },
-
     {
       path: '/main',
       name: 'Home',
       component: DefaultLayout,
-      redirect: '/about',
+      redirect: '/main/about',
       children: [
         {
-          path: '/about',
+          path: 'about',
           name: 'About',
           component: () => import('../views/AboutView.vue'),
+        },
+        {
+          path: 'companyCreate',
+          name: 'CompanyCreate',
+          component: () => import('../views/CompanyCreate.vue'),
         },
       ]
     },
