@@ -8,7 +8,7 @@
         </div>
         <div class="input-group">
           <label>사업자 번호</label>
-          <el-input v-model="companyNumber" placeholder="사업자 번호를 입력하세요." :formatter="toOnlyNumber" :parser="parseOnlyNumber ">
+          <el-input v-model="form.companyNumber" placeholder="사업자 번호를 입력하세요." :formatter="toOnlyNumber" :parser="parseOnlyNumber ">
             <template #append>
               <el-button :icon="Search" @click="companySearch"/>
             </template>
@@ -24,12 +24,14 @@
 
   <script setup lang="ts">
   import { Search } from '@element-plus/icons-vue';
-  import { ref } from 'vue';
+  import { reactive } from 'vue'
 
-  const companyNumber = ref('');
+  const form = reactive({
+    companyNumber :''
+  })
 
   const companySearch = ()=>{
-    console.log('사업자 등록번호 : ',companyNumber.value);
+    console.log('사업자 등록번호 : ',form.companyNumber);
 
     const isValid: boolean = true;
 
