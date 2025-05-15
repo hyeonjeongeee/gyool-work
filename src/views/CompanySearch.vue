@@ -8,16 +8,14 @@
         </div>
         <div class="input-group">
           <label>사업자 번호</label>
-          <el-input v-model="form.number" placeholder="사업자 번호를 입력하세요.">
+          <el-input v-model="companyNumber" placeholder="사업자 번호를 입력하세요." :formatter="toOnlyNumber" :parser="parseOnlyNumber ">
             <template #append>
               <el-button :icon="Search" @click="companySearch"/>
             </template>
           </el-input>
         </div>
         
-        <div>
           <el-button class="bg-gyool-green company-join-btn" @click="companyJoin">가입요청</el-button>
-        </div>
       </el-form>
     </div>
   </div>
@@ -28,14 +26,26 @@
   import { Search } from '@element-plus/icons-vue';
   import { ref } from 'vue';
 
-  const form = ref({
-    number:''
-  });
+  const companyNumber = ref('');
 
   const companySearch = ()=>{
-    console.log('회사검색');
+    console.log('사업자 등록번호 : ',companyNumber.value);
+
+    const isValid: boolean = true;
+
+    if(!isValid)return false;
+
+    //api호출
+    
   }
 
+  function toOnlyNumber(val :String){
+    return val.replace(/\D/g, '');
+  }
+
+  const parseOnlyNumber = toOnlyNumber;
+  
+  
   const companyJoin = () => {
     console.log('가입요청');
   }
