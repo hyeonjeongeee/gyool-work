@@ -36,7 +36,7 @@ const router = createRouter({
           component: () => import('../views/CompanySearch.vue'),
         },
         {
-          path: '/companyJoin',
+          path: 'companyJoin',
           name: 'CompanyJoin',
           component: () => import('../views/CompanyJoin.vue'),
         }

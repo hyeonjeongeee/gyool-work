@@ -36,6 +36,7 @@
   import { ElMessage } from 'element-plus'
   import logo from '@/assets/logo/gyool1.png';
   import {useRouter} from "vue-router";
+  import {request} from "@/utils/request"
 
   interface formData {
     id: string;
@@ -52,8 +53,14 @@
   })
 
   const router = useRouter();
-  const register = ()=>{
+  const register = async ()=>{
+    
+    let url = '/join';
+    let method = 'post';
+
     if(formCheck()){
+      const result = await request({method : method, url: url, data: form})
+
       ElMessage({
         type: 'success',
         message:'회원가입이 완료되었습니다.'
