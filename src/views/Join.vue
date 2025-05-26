@@ -12,7 +12,7 @@
         </div>
         <div class="input-div">
           <div class="label">비밀번호</div>
-          <el-input v-model="form.pw" type="password" placeholder="비밀번호를 입력하세요." show-password/>
+          <el-input v-model="form.password" type="password" placeholder="비밀번호를 입력하세요." show-password/>
         </div>
         <div class="input-div">
           <div class="label">비밀번호 확인</div>
@@ -40,14 +40,14 @@
 
   interface formData {
     id: string;
-    pw: string;
+    password: string;
     pwChk: string;
     name: string;
   }
 
   const form = reactive<formData>({
     id :'',
-    pw:'',
+    password:'',
     pwChk:'',
     name:''
   })
@@ -80,9 +80,9 @@
     }
 
     if (!form.id) return warn('아이디를 입력하세요.')
-    if (!form.pw) return warn('비밀번호를 입력하세요.')
+    if (!form.password) return warn('비밀번호를 입력하세요.')
     if (!form.pwChk) return warn('비밀번호 확인을 입력하세요.')
-    if (form.pw !== form.pwChk) return warn('비밀번호가 일치하지 않습니다.')
+    if (form.password !== form.pwChk) return warn('비밀번호가 일치하지 않습니다.')
     if (!form.name) return warn('이름을 입력하세요.')
 
     return true
