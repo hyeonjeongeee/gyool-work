@@ -12,10 +12,10 @@
         </div>
         <div class="input-div">
           <div class="label">비밀번호</div>
-          <el-input v-model="form.pw" type="password" placeholder="비밀번호를 입력하세요." show-password/>
+          <el-input v-model="form.password" type="password" placeholder="비밀번호를 입력하세요." show-password/>
         </div>
         <div class="row-space-between">
-          <el-checkbox v-model="checked">ID 기억하기</el-checkbox>
+          <el-checkbox v-model="rememberId">ID 기억하기</el-checkbox>
           <el-link  @click="findPassword" underline="hover" type="default">비밀번호 찾기</el-link>
         </div>
         <div>
@@ -31,21 +31,44 @@
 
 
   <script setup lang="ts">
-  import { reactive } from 'vue'
+  import {onMounted, reactive} from 'vue'
 
   import logo from '@/assets/logo/gyool1.png';
   import { ref } from 'vue'
   import { useRouter } from 'vue-router'
 
-  const router = useRouter()
-  const checked = ref(false);
-  const form = reactive({
+  //타입지정
+  interface formData {
+    id: string;
+    password: string;
+  }
+
+  const form = reactive<formData>({
     id :'',
-    pw:''
+    password:''
   })
+
+  //아이디 기억하기
+
+  const rememberId = ref(false);
+  onMounted(()=>{
+    const savedId =  localStorage.getItem("remember") ?? '';
+    if(savedId != ''){
+      rememberId.value = true;
+      form.id = savedId;
+    }
+  })
+
+  const router = useRouter()
 
   const login = ()=>{
     console.log("로그인");
+
+    if(rememberId.value) {
+      localStorage.setItem("remember",form.id);
+    }else{
+      localStorage.removeItem("remember")
+    }
   }
   const register = ()=>{
     console.log("회원가입");
@@ -53,7 +76,9 @@
   }
   const findPassword= () =>{
     console.log("비밀번호 찾기")
+    router.push({ name: 'FindPassword' })
   }
+
   </script>
 
 <style scoped>

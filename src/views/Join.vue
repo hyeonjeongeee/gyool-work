@@ -19,6 +19,13 @@
           <el-input v-model="form.pwChk" type="password" placeholder="비밀번호 확인을 입력하세요." show-password/>
         </div>
         <div class="input-div">
+          <div class="label">이메일</div>
+          <div>
+            <el-input v-model="form.email" placeholder="이메일을 입력하세요." />
+          </div>
+
+        </div>
+        <div class="input-div">
           <div class="label">이름</div>
           <el-input v-model="form.name" placeholder="이름을 입력하세요." />
         </div>
@@ -31,63 +38,65 @@
 </template>
 
 
-  <script setup lang="ts">
-  import { reactive } from 'vue'
-  import { ElMessage } from 'element-plus'
-  import logo from '@/assets/logo/gyool1.png';
-  import {useRouter} from "vue-router";
-  import {request} from "@/utils/request"
+<script setup lang="ts">
+import { reactive } from 'vue'
+import logo from '@/assets/logo/gyool1.png';
+import {useRouter} from "vue-router";
+import {request} from "@/utils/request"
+import {showMsg} from"@/utils/Elmessage"
 
-  interface formData {
-    id: string;
-    password: string;
-    pwChk: string;
-    name: string;
+interface formData {
+  id: string;
+  password: string;
+  pwChk: string;
+  email: string;
+  name: string;
+}
+
+const form = reactive<formData>({
+  id :'',
+  password:'',
+  pwChk:'',
+  email:'',
+  name:''
+})
+
+const router = useRouter();
+const register = async ()=>{
+
+  let url = '/join';
+  let method = 'post';
+
+  if(formCheck()){
+    const result = await request({method : method, url: url, data: form})
+
+    showMsg('success','회원가입이 완료되었습니다.')
+
+    router.push({ name: 'Login' })
+  }
+}
+
+function formCheck(): boolean {
+  const warn = (message: string): boolean => {
+   showMsg('warning',message)
+    return false
   }
 
-  const form = reactive<formData>({
-    id :'',
-    password:'',
-    pwChk:'',
-    name:''
-  })
-
-  const router = useRouter();
-  const register = async ()=>{
-    
-    let url = '/join';
-    let method = 'post';
-
-    if(formCheck()){
-      const result = await request({method : method, url: url, data: form})
-
-      ElMessage({
-        type: 'success',
-        message:'회원가입이 완료되었습니다.'
-      })
-
-      router.push({ name: 'Login' })
-    }
+  //이메일 유효성 검사
+  const isEmail = (email: string) : boolean =>{
+    return /^[a-z0-9._%+-]{1,}@[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}$/.test(email);
   }
 
-  function formCheck(): boolean {
-    const warn = (message: string): boolean => {
-      ElMessage({
-        type: 'warning',
-        message
-      })
-      return false
-    }
+  if (!form.id) return warn('아이디를 입력하세요.')
+  if (!form.password) return warn('비밀번호를 입력하세요.')
+  if (!form.pwChk) return warn('비밀번호 확인을 입력하세요.')
+  if (form.password !== form.pwChk) return warn('비밀번호가 일치하지 않습니다.')
+  if(!isEmail(form.email)) return warn('정확한 이메일을 입력해주세요.')
+  if (!form.name) return warn('이름을 입력하세요.')
 
-    if (!form.id) return warn('아이디를 입력하세요.')
-    if (!form.password) return warn('비밀번호를 입력하세요.')
-    if (!form.pwChk) return warn('비밀번호 확인을 입력하세요.')
-    if (form.password !== form.pwChk) return warn('비밀번호가 일치하지 않습니다.')
-    if (!form.name) return warn('이름을 입력하세요.')
-
-    return true
-  }
-  </script>
+  return true
+}
+</script>
 
 <style scoped>
 .join-div {
@@ -101,13 +110,13 @@
   height: 66px;
   width: 100%;
   margin-bottom: 40px;
- }
+}
 .join-form{
   background-color: #ffffff;
   display: flex ;
   flex-direction: column;
   align-items: stretch;
-  height: 692px;
+  height: 782px;
   width: 500px;
   padding: 60px 50px 70px 50px;
   border-radius: 20px;

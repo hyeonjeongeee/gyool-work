@@ -15,6 +15,11 @@ const router = createRouter({
       component : () => import('../views/Join.vue')
     },
     {
+      path : '/findPassword',
+      name : 'FindPassword',
+      component : () => import('../views/FindPassword.vue')
+    },
+    {
       path: '/main',
       name: 'Home',
       component: DefaultLayout,

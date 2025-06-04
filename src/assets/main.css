@@ -51,3 +51,9 @@
 .el-button.bg-gyool-warm-gray:hover{
   background-color: #85736f !important;
 }
+
+.flex-row-center{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
