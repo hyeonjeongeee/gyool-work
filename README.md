@@ -1,18 +1,13 @@
 # gyool-work
 
-This template should help get you started developing with Vue 3 in Vite.
+🍊 모든 팀을 위한 간편하고 직관적인 협업 툴입니다. 🍊
 
-## Recommended IDE Setup
+## 🛠️ 기술 스택
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- Framework: Vue 3
+- Language: TypeScript
+- Build Tool: Vite
 
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
 
 ## Project Setup
 
@@ -20,13 +15,13 @@ See [Vite Configuration Reference](https://vite.dev/config/).
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### for Development
 
 ```sh
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+### for Production
 
 ```sh
 npm run build
