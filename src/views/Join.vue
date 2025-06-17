@@ -7,7 +7,7 @@
       </div>
       <el-form :model="form" label-width="auto" style="max-width: 400px">
         <div class="input-div">
-          <div class="label">아이디?</div>
+          <div class="label">아이디</div>
           <el-input v-model="form.id" placeholder="아이디를 입력하세요." />
         </div>
         <div class="input-div">
