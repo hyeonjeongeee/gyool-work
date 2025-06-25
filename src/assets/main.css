@@ -27,6 +27,17 @@
     display: flex;
   }
 }
+
+.gyool-green { color: #889F69 !important;}
+.gyool-blue { color: #7291C7 !important; }
+.gyool-violet { color: #A792B9 !important; }
+.gyool-pink { color: #D19B98 !important; }
+.gyool-brown { color: #A47764 !important; }
+.gyool-warm-gray { color: #A89A8F !important; }
+.gyool-olive { color: #9A8C4F !important; }
+.gyool-oatmeal { color: #F0E9DF !important; }
+.gyool-red { color: #d82323 !important; }
+
 .bg-gyool-green { background-color: #889F69 !important;}
 .bg-gyool-blue { background-color: #7291C7 !important; }
 .bg-gyool-violet { background-color: #A792B9 !important; }
@@ -35,6 +46,7 @@
 .bg-gyool-warm-gray { background-color: #A89A8F !important; }
 .bg-gyool-olive { background-color: #9A8C4F !important; }
 .bg-gyool-oatmeal { background-color: #F0E9DF !important; }
+
 .el-button{
   border: none !important;
 }

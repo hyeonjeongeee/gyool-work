@@ -2,9 +2,7 @@
 <template>
   <div class="login-div">
     <div class="login-form">
-      <div class="logo-div">
-        <el-image style="width: 100%; height: 100%" :src="logo" fit="contain"/>
-      </div>
+      <logo/>
       <el-form :model="form" label-width="auto" style="max-width: 400px">
         <div class="input-div">
           <div class="label">아이디</div>
@@ -32,10 +30,11 @@
 
   <script setup lang="ts">
   import {onMounted, reactive} from 'vue'
-
-  import logo from '@/assets/logo/gyool1.png';
+  import logo from "@/component/Logo.vue"
   import { ref } from 'vue'
   import { useRouter } from 'vue-router'
+  import {showMsg} from"@/utils/Elmessage"
+  import {request} from "@/utils/request.ts";
 
   //타입지정
   interface formData {
@@ -59,10 +58,30 @@
     }
   })
 
+
+  //경고 message box
+  const warn = (message: string): boolean => {
+    showMsg('warning',message)
+    return false
+  }
+
   const router = useRouter()
 
-  const login = ()=>{
+  const login = async () =>{
     console.log("로그인");
+
+    let url = '/login';
+    let method = 'post';
+
+    const isCorrectId = (id: string) : boolean =>{
+      return /^[a-z0-9_-]+$/.test(id);
+    }
+
+
+    if (!form.id) return warn('아이디를 입력하세요.');
+    if (!isCorrectId(form.id)) return warn('영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.');
+
+    const result = await  request({method : method , url : url, data:form})
 
     if(rememberId.value) {
       localStorage.setItem("remember",form.id);
@@ -89,11 +108,6 @@
   align-items: center;
   justify-content: center;
 }
-.logo-div {
-  height: 66px;
-  width: 100%;
-  margin-bottom: 40px;
- }
 .login-form{
   background-color: #ffffff;
   display: flex ;

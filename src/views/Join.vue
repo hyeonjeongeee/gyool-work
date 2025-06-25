@@ -2,13 +2,20 @@
 <template>
   <div class="join-div">
     <div class="join-form">
-      <div class="logo-div">
-        <el-image style="width: 100%; height: 100%" :src="logo" fit="contain"/>
-      </div>
+      <logo/>
       <el-form :model="form" label-width="auto" style="max-width: 400px">
-        <div class="input-div">
+        <div class="input-div"  :class="{ 'mb-7': isShow }">
           <div class="label">아이디</div>
-          <el-input v-model="form.id" placeholder="아이디를 입력하세요." />
+          <div class="flex-row-center">
+            <el-input
+                v-model="form.id"
+                placeholder="아이디를 입력하세요.(4~16자)"
+                maxlength ="16"
+                @focus="resetDuplChk"
+                />
+            <el-button class="confirmBtn bg-gyool-brown gyool-oatmeal" @click="duplicationChk">중복확인</el-button>
+          </div>
+          <div v-if="isShow" :class="isDuplication? 'gyool-green' : 'gyool-red'" class="dulplChkMsg">{{ duplicationChkMsg}}</div>
         </div>
         <div class="input-div">
           <div class="label">비밀번호</div>
@@ -39,8 +46,8 @@
 
 
 <script setup lang="ts">
-import { reactive } from 'vue'
-import logo from '@/assets/logo/gyool1.png';
+import logo from '@/component/Logo.vue'
+import {reactive, ref} from 'vue'
 import {useRouter} from "vue-router";
 import {request} from "@/utils/request"
 import {showMsg} from"@/utils/Elmessage"
@@ -61,10 +68,57 @@ const form = reactive<formData>({
   name:''
 })
 
+
+//경고 message box
+const warn = (message: string): boolean => {
+  showMsg('warning',message)
+  return false
+}
+
+//아이디 중복체크
+const duplicationChkMsg = ref('');
+const isShow = ref(false);
+const isDuplication = ref(false);
+
+//아이디 새로 입력시 중복체크 상태값 reset
+const resetDuplChk = () =>{
+  isShow.value = false;
+  isDuplication.value = false;
+}
+
+
+//아이디 중복 체크
+const duplicationChk = async () =>{
+  let url = '/user/duplication';
+  let method = 'post';
+  //아이디 유효성 검사
+  const isCorrectId = (id: string) : boolean =>{
+    return /^[a-z0-9_-]+$/.test(id);
+  }
+
+
+  if (!form.id) return warn('아이디를 입력하세요.');
+  if (!isCorrectId(form.id)) return warn('영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.');
+  if ( form.id.length < 4 ) return warn('아이디를 최소4자 이상 입력해주세요');
+
+  const result = await  request({method : method , url : url, data:form})
+
+  isShow.value = true;
+  isDuplication.value = result;
+
+  if(result){
+    duplicationChkMsg.value = '사용가능한 아이디 입니다.';
+  }else{
+    duplicationChkMsg.value='이미 사용중인 아이디 입니다.';
+  }
+
+}
+
+//회원가입
 const router = useRouter();
 const register = async ()=>{
 
-  let url = '/join';
+  let url = '/user/join';
   let method = 'post';
 
   if(formCheck()){
@@ -76,18 +130,15 @@ const register = async ()=>{
   }
 }
 
+//form 유효성 검사
 function formCheck(): boolean {
-  const warn = (message: string): boolean => {
-   showMsg('warning',message)
-    return false
-  }
-
   //이메일 유효성 검사
   const isEmail = (email: string) : boolean =>{
     return /^[a-z0-9._%+-]{1,}@[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}$/.test(email);
   }
 
   if (!form.id) return warn('아이디를 입력하세요.')
+  if (!isDuplication.value) return warn('아이디 중복확인 해주세요.')
   if (!form.password) return warn('비밀번호를 입력하세요.')
   if (!form.pwChk) return warn('비밀번호 확인을 입력하세요.')
   if (form.password !== form.pwChk) return warn('비밀번호가 일치하지 않습니다.')
@@ -106,11 +157,6 @@ function formCheck(): boolean {
   align-items: center;
   justify-content: center;
 }
-.logo-div {
-  height: 66px;
-  width: 100%;
-  margin-bottom: 40px;
-}
 .join-form{
   background-color: #ffffff;
   display: flex ;
@@ -128,7 +174,17 @@ function formCheck(): boolean {
 .input-div{
   margin-bottom: 20px;
 }
-
+.confirmBtn{
+  height: 44px;
+  margin-left: 10px;
+}
+.dulplChkMsg{
+  font-size:  13px;
+  margin-left: 5px;
+}
+.mb-7{
+  margin-bottom: 7px;
+}
 .register-btn {
   color: #ffffff;
   font-weight: bold;

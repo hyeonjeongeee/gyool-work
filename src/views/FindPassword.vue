@@ -61,20 +61,20 @@
   const confirmEmail = async () => {
     console.log("아이디 찾기")
 
-    let url = '/confirmEmail'
+    let url = '/user/confirmEmail'
     let method = 'post';
 
     if(formCheck()){
       const result = await request({method : method, url: url, data: form})
       //result 결과에 따른 메세지 셋팅 (전송 오류, 정상 전송)
-      isConfirm.value= true;
-      showMsg('success','이메일 전송이 완료되었습니다.')
+      //isConfirm.value= true;
+      //showMsg('success','이메일 전송이 완료되었습니다.')
     }
   }
 
   const findPassword = async ()=>{
     
-    let url = '/findPassword';
+    let url = '/user/findPassword';
     let method = 'post';
 
     if(formCheck()){

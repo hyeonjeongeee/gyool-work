@@ -15,6 +15,7 @@
     "axios": "^1.9.0",
     "date-fns": "^4.1.0",
     "element-plus": "^2.9.9",
+    "jsencrypt": "^3.3.2",
     "pinia": "^3.0.2",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
