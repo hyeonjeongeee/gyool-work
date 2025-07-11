@@ -33,8 +33,11 @@
   import logo from "@/component/Logo.vue"
   import { ref } from 'vue'
   import { useRouter } from 'vue-router'
-  import {showMsg} from"@/utils/Elmessage"
+  import {type MessageType, showMsg} from "@/utils/Elmessage"
   import {request} from "@/utils/request.ts";
+
+  import {useTokenStore} from '@/stores/Token'
+  import {useUserInfo} from '@/stores/UserInfo'
 
   //타입지정
   interface formData {
@@ -60,43 +63,57 @@
 
 
   //경고 message box
-  const warn = (message: string): boolean => {
-    showMsg('warning',message)
+  const msg = (type :MessageType,message: string): boolean => {
+    showMsg(type,message)
     return false
   }
 
   const router = useRouter()
 
-  const login = async () =>{
-    console.log("로그인");
 
-    let url = '/login';
-    let method = 'post';
+  async function login() {
+      try {
 
-    const isCorrectId = (id: string) : boolean =>{
-      return /^[a-z0-9_-]+$/.test(id);
+        const isCorrectId = (id: string): boolean => {
+          return /^[a-z0-9_-]+$/.test(id);
+        }
+
+
+        if (!form.id) return msg('warning', '아이디를 입력하세요.');
+        if (!isCorrectId(form.id)) return msg('warning', '영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.');
+
+
+        const result = await request({
+          method: 'post',
+          url: '/login',
+          data: form,
+        });
+
+        if (rememberId.value) {
+          localStorage.setItem("remember", form.id);
+        } else {
+          localStorage.removeItem("remember")
+        }
+
+        // 로그인 성공 처리 (예: 토큰 저장, 페이지 이동 등)
+        useTokenStore().setAccessToken(result.token);
+        useUserInfo().setUser(result.user);
+        router.push({name: 'Home'});
+
+      } catch (error: any) {
+        msg('error', error.response.data);
+
+      }
+  }
+
+    const register = () => {
+      console.log("회원가입");
+      router.push({name: 'Join'})
     }
-
-
-    if (!form.id) return warn('아이디를 입력하세요.');
-    if (!isCorrectId(form.id)) return warn('영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.');
-
-    const result = await  request({method : method , url : url, data:form})
-
-    if(rememberId.value) {
-      localStorage.setItem("remember",form.id);
-    }else{
-      localStorage.removeItem("remember")
+    const findPassword = () => {
+      console.log("비밀번호 찾기")
+      router.push({name: 'FindPassword'})
     }
-  }
-  const register = ()=>{
-    console.log("회원가입");
-    router.push({ name: 'Join' })
-  }
-  const findPassword= () =>{
-    console.log("비밀번호 찾기")
-    router.push({ name: 'FindPassword' })
-  }
 
   </script>
 

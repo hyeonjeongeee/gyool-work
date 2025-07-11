@@ -1,6 +1,6 @@
 import axios from '@/plugins/axios.ts'
 
-//리터럴 타입 제한
+//리터럴 타입 제한 => method 타입
 type Method = 'get' | 'post' | 'put' | 'delete'
 
 
@@ -13,9 +13,15 @@ interface RequestOptions {
     params?: any
     headers?: Record<string, string>
 }
-
+//request 함수정의
 export const request = async <T = any>(options: RequestOptions): Promise<T> => {
-    const { method, url, data, params, headers } = options
+    const { method, url, data, params, headers = {}  } = options;
+
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+    }
+
 
     try {
         const response = await axios({
@@ -28,10 +34,6 @@ export const request = async <T = any>(options: RequestOptions): Promise<T> => {
 
         return response.data
     } catch (error: any) {
-        console.error(`[HTTP ERROR] ${method.toUpperCase()} ${url}`, error)
-
-        // 원하는 공통 에러 메시지 처리 가능
-        // alert('요청 중 오류가 발생했습니다.')
 
         throw error
     }
