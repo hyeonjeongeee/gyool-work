@@ -82,6 +82,20 @@
     if (!isCorrectId(form.id)) return warn('영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.');
 
     const result = await  request({method : method , url : url, data:form})
+    console.log(result)
+    if (result && result.token) {
+      // ✅ 토큰 저장
+      localStorage.setItem("accessToken", result.token);
+
+      if(result.user.companyId !== null) {
+        router.push('/main');
+      }else {
+        router.push('/main/companyCreate');
+      }
+
+    } else {
+      warn('로그인 실패: 토큰을 받지 못했습니다.');
+    }
 
     if(rememberId.value) {
       localStorage.setItem("remember",form.id);

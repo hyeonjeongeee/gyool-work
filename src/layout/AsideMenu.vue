@@ -8,7 +8,7 @@
       <el-menu-item index="/notification">
         <img src="@/assets/aside/notification.png" class="custom-icon" />
       </el-menu-item>
-      <el-menu-item index="/chat">
+      <el-menu-item index="/members">
         <img src="@/assets/aside/chat.png" class="custom-icon" />
       </el-menu-item>
       <el-menu-item index="/setting">
