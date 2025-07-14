@@ -30,11 +30,22 @@ export const request = async <T = any>(options: RequestOptions): Promise<T> => {
             headers,
             data: method !== 'get' ? data : undefined,
             params: method === 'get' ? params || data : undefined,
+            withCredentials : true
         })
 
+
+        const newAccessToken = response.headers['authorization'];
+        if(newAccessToken){
+            const tokenVal = newAccessToken.replace('Bearer ', '');
+            localStorage.setItem('accessToken',tokenVal);
+        }
+
+
         return response.data
+
     } catch (error: any) {
 
+        console.log(error);
         throw error
     }
 }

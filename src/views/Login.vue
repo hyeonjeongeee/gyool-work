@@ -101,7 +101,7 @@
         router.push({name: 'Home'});
 
       } catch (error: any) {
-        msg('error', error.response.data);
+        msg('error', error.response.data.message);
 
       }
   }

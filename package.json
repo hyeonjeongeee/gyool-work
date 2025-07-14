@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "run-p type-check \"build-only {@}\" --",
-    "preview": "vite preview",
+    "build": "run-p type-check build-only postbuild",
     "build-only": "vite build",
-    "type-check": "vue-tsc --build"
+    "type-check": "vue-tsc --build",
+    "postbuild": "node scripts/copy-to-spring.cjs"
   },
   "dependencies": {
     "@vuepic/vue-datepicker": "^11.0.2",
@@ -25,6 +25,7 @@
     "@types/node": "^22.14.0",
     "@vitejs/plugin-vue": "^5.2.3",
     "@vue/tsconfig": "^0.7.0",
+    "fs-extra": "^11.3.0",
     "npm-run-all2": "^7.0.2",
     "typescript": "~5.8.0",
     "vite": "^6.3.5",

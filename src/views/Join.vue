@@ -90,7 +90,6 @@ const resetDuplChk = () =>{
 //아이디 중복 체크
 const duplicationChk = async () =>{
   let url = '/user/duplication';
-  let method = 'post';
   //아이디 유효성 검사
   const isCorrectId = (id: string) : boolean =>{
     return /^[a-z0-9_-]+$/.test(id);
@@ -101,7 +100,7 @@ const duplicationChk = async () =>{
   if (!isCorrectId(form.id)) return warn('영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.');
   if ( form.id.length < 4 ) return warn('아이디를 최소4자 이상 입력해주세요');
 
-  const result = await  request({method : method , url : url, data:form})
+  const result = await  request({method :'post' , url : url, data:form})
 
   isShow.value = true;
   isDuplication.value = result;
@@ -119,10 +118,8 @@ const router = useRouter();
 const register = async ()=>{
 
   let url = '/user/join';
-  let method = 'post';
-
   if(formCheck()){
-    const result = await request({method : method, url: url, data: form})
+    const result = await request({method :'post', url: url, data: form})
 
     showMsg('success','회원가입이 완료되었습니다.')
 
