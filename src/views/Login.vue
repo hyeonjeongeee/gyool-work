@@ -88,9 +88,9 @@
       localStorage.setItem("accessToken", result.token);
 
       if(result.user.companyId !== null) {
-        router.push('/main');
+        router.push({ name: 'Home' })
       }else {
-        router.push('/main/companyCreate');
+        router.push({ name: 'CompanySearch' })
       }
 
     } else {
