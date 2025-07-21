@@ -98,7 +98,7 @@
         // 로그인 성공 처리 (예: 토큰 저장, 페이지 이동 등)
         useTokenStore().setAccessToken(result.token);
         useUserInfo().setUser(result.user);
-        router.push({name: 'Home'});
+        router.push({name: 'home'});
 
       } catch (error: any) {
         msg('error', error.response.data.message);
@@ -108,11 +108,11 @@
 
     const register = () => {
       console.log("회원가입");
-      router.push({name: 'Join'})
+      router.push({name: 'join'})
     }
     const findPassword = () => {
       console.log("비밀번호 찾기")
-      router.push({name: 'FindPassword'})
+      router.push({name: 'findPassword'})
     }
 
   </script>

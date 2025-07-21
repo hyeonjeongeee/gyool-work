@@ -5,7 +5,6 @@
         <AsideMenu />
       </el-aside>
       <el-container>
-<!--        <el-header>Header</el-header>-->
         <el-main>
           <router-view/>
         </el-main>
@@ -21,7 +20,7 @@ import AsideMenu from '@/layout/AsideMenu.vue';
 
 <style scoped>
   .el-aside{
-    width: 5%;
+    width: 65px;
   }
   .el-main {
     border-radius: 3px;
