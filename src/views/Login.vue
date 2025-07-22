@@ -2,9 +2,7 @@
 <template>
   <div class="login-div">
     <div class="login-form">
-      <div class="logo-div">
-        <el-image style="width: 100%; height: 100%" :src="logo" fit="contain"/>
-      </div>
+      <logo/>
       <el-form :model="form" label-width="auto" style="max-width: 400px">
         <div class="input-div">
           <div class="label">아이디</div>
@@ -12,10 +10,10 @@
         </div>
         <div class="input-div">
           <div class="label">비밀번호</div>
-          <el-input v-model="form.pw" type="password" placeholder="비밀번호를 입력하세요." show-password/>
+          <el-input v-model="form.password" type="password" placeholder="비밀번호를 입력하세요." show-password/>
         </div>
         <div class="row-space-between">
-          <el-checkbox v-model="checked">ID 기억하기</el-checkbox>
+          <el-checkbox v-model="rememberId">ID 기억하기</el-checkbox>
           <el-link  @click="findPassword" underline="hover" type="default">비밀번호 찾기</el-link>
         </div>
         <div>
@@ -31,29 +29,92 @@
 
 
   <script setup lang="ts">
-  import { reactive } from 'vue'
-
-  import logo from '@/assets/logo/gyool1.png';
+  import {onMounted, reactive} from 'vue'
+  import logo from "@/component/Logo.vue"
   import { ref } from 'vue'
   import { useRouter } from 'vue-router'
+  import {type MessageType, showMsg} from "@/utils/Elmessage"
+  import {request} from "@/utils/request.ts";
 
-  const router = useRouter()
-  const checked = ref(false);
-  const form = reactive({
+  import {useTokenStore} from '@/stores/Token'
+  import {useUserInfo} from '@/stores/UserInfo'
+
+  //타입지정
+  interface formData {
+    id: string;
+    password: string;
+  }
+
+  const form = reactive<formData>({
     id :'',
-    pw:''
+    password:''
   })
 
-  const login = ()=>{
-    console.log("로그인");
+  //아이디 기억하기
+
+  const rememberId = ref(false);
+  onMounted(()=>{
+    const savedId =  localStorage.getItem("remember") ?? '';
+    if(savedId != ''){
+      rememberId.value = true;
+      form.id = savedId;
+    }
+  })
+
+
+  //경고 message box
+  const msg = (type :MessageType,message: string): boolean => {
+    showMsg(type,message)
+    return false
   }
-  const register = ()=>{
-    console.log("회원가입");
-    router.push({ name: 'Join' })
+
+  const router = useRouter()
+
+
+  async function login() {
+      try {
+
+        const isCorrectId = (id: string): boolean => {
+          return /^[a-z0-9_-]+$/.test(id);
+        }
+
+
+        if (!form.id) return msg('warning', '아이디를 입력하세요.');
+        if (!isCorrectId(form.id)) return msg('warning', '영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.');
+
+
+        const result = await request({
+          method: 'post',
+          url: '/login',
+          data: form,
+        });
+
+        if (rememberId.value) {
+          localStorage.setItem("remember", form.id);
+        } else {
+          localStorage.removeItem("remember")
+        }
+
+        // 로그인 성공 처리 (예: 토큰 저장, 페이지 이동 등)
+        useTokenStore().setAccessToken(result.token);
+        useUserInfo().setUser(result.user);
+        router.push({name: 'home'});
+
+      } catch (error: any) {
+        msg('error', error.response.data.message);
+
+      }
   }
-  const findPassword= () =>{
-    console.log("비밀번호 찾기")
-  }
+
+    const register = () => {
+      console.log("회원가입");
+      router.push({name: 'join'})
+    }
+    const findPassword = () => {
+      console.log("비밀번호 찾기")
+      router.push({name: 'findPassword'})
+    }
+
   </script>
 
 <style scoped>
@@ -64,11 +125,6 @@
   align-items: center;
   justify-content: center;
 }
-.logo-div {
-  height: 66px;
-  width: 100%;
-  margin-bottom: 40px;
- }
 .login-form{
   background-color: #ffffff;
   display: flex ;
