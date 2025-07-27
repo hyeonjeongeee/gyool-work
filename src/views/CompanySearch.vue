@@ -41,6 +41,7 @@
   })
 
   const companyInfo = ref<'init' | null | any>('init');
+  const companyId = ref<string | null>(null);
 
   const warn = (message: string): boolean => {
     showMsg('warning', message);
@@ -64,7 +65,12 @@
     const result = await request({method: method , url : url, data:form})
     companyInfo.value = result || null;
 
-    if(!result) warn('등록되지 않은 회사입니다. 회사를 등록해주세요.')
+    if (result && result.companyId) {
+      companyId.value = result.companyId;  // companyId 저장
+    } else {
+      companyId.value = null;
+      warn('등록되지 않은 회사입니다. 회사를 등록해주세요.');
+    }
   }
 
   function toOnlyNumber(val :String){
@@ -74,8 +80,22 @@
   const parseOnlyNumber = toOnlyNumber;
 
 
-  const companyJoin = () => {
+  const companyJoin = async() => {
     console.log('가입요청');
+    let url = '/company/requestJoin';
+    let method = 'post';
+
+    const data = {
+      companyId: companyId.value,
+    };
+
+    const result = await request({ method, url, data });
+
+    if (result) {
+      showMsg('success', '가입 요청이 완료되었습니다.');
+    } else {
+      warn('가입 요청에 실패했습니다.');
+    }
   }
 
   const companyRegister = () => {

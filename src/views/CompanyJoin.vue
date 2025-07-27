@@ -8,7 +8,7 @@
         <input
           class="form-input"
           placeholder="사업자 번호를 입력하세요."
-          v-model="businessNumber"
+          v-model="businessNum"
         />
 
         <div class="form-label">대표자 성명</div>
@@ -22,7 +22,7 @@
         <div class="form-input-wrapper">
           <DatePicker
             ref="picker"
-            v-model="openingDate"
+            v-model="openDate"
             format="yyyy-MM-dd"
             :clearable="true"
             class="form-date-picker"
@@ -44,29 +44,50 @@
 </template>
 
 <script setup lang="ts">
-import {computed, nextTick, ref} from 'vue'
+import {computed, nextTick, reactive, ref} from 'vue'
 import type DatePicker from "@vuepic/vue-datepicker";
 import {format} from "date-fns";
+import dayjs from 'dayjs';
+import {request} from "@/utils/request.ts";
 
-const businessNumber = ref('')
+const businessNum = ref('')
 const ceoName = ref('')
+const openDate = ref<Date | null>(null);
 
-function submitForm() {
+const form = reactive<formData>({
+  businessNum : businessNum,
+  ceoName : ceoName,
+  openDate : openDate
+})
+
+const submitForm = async ()  => {
   if (!validationForm()) {
     alert('모든 정보를 입력해주세요.');
     return;
-  };
+  }
 
-  console.log('사업자번호:', businessNumber.value)
+
+
+  console.log('사업자번호:', businessNum.value)
   console.log('대표자 성명:', ceoName.value)
-  console.log('개업일자:', openingDate.value)
+  let yyyyMMdd = '';
+  if (openDate.value) {
+    yyyyMMdd = dayjs(openDate.value).format('YYYYMMDD');
+    form.openDate = yyyyMMdd;
+  }
+  console.log('개업일자:', yyyyMMdd)
+  let url = '/company/createCompany';
+  let method = 'post';
+
+  const result = await request({method: method , url : url, data:form})
+  console.log(result);
 }
 
-const openingDate = ref(null)
+
 
 const openingDateStr = computed(() => {
-  if (!openingDate.value) return ''
-  return format(openingDate.value, 'yyyy-MM-dd')
+  if (!openDate.value) return ''
+  return format(openDate.value, 'yyyy-MM-dd')
 })
 const picker = ref<InstanceType<typeof DatePicker> | null>(null)
 
@@ -81,9 +102,9 @@ function openDatePicker() {
 }
 
 function validationForm() {
-  if (!businessNumber.value) return false;
+  if (!businessNum.value) return false;
   if (!ceoName.value) return false;
-  if (!openingDate.value) return false;
+  if (!openDate.value) return false;
   return true
 }
 </script>
