@@ -89,16 +89,27 @@
           data: form,
         });
 
+    if (result && result.token) {
+      // ✅ 토큰 저장
+      // 로그인 성공 처리 (예: 토큰 저장, 페이지 이동 등)
+      useTokenStore().setAccessToken(result.token);
+      useUserInfo().setUser(result.user);
+
+      if(result.user.companyId !== null) {
+        router.push({ name: 'Home' })
+      }else {
+        router.push({ name: 'CompanySearch' })
+      }
+
+    } else {
+      msg('warning','로그인 실패: 토큰을 받지 못했습니다.');
+    }
+
         if (rememberId.value) {
           localStorage.setItem("remember", form.id);
         } else {
           localStorage.removeItem("remember")
         }
-
-        // 로그인 성공 처리 (예: 토큰 저장, 페이지 이동 등)
-        useTokenStore().setAccessToken(result.token);
-        useUserInfo().setUser(result.user);
-        router.push({name: 'home'});
 
       } catch (error: any) {
         msg('error', error.response.data.message);

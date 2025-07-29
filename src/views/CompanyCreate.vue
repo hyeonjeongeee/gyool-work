@@ -21,10 +21,6 @@
 
 
   <script setup lang="ts">
-  import { reactive } from 'vue'
-
-  import logo from '@/assets/logo/gyool1.png';
-  import { ref } from 'vue'
   import { useRouter } from 'vue-router'
 
   const router = useRouter()

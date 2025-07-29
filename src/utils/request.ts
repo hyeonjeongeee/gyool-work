@@ -23,11 +23,22 @@ export const request = async <T = any>(options: RequestOptions): Promise<T> => {
     }
 
 
+    const token = localStorage.getItem('accessToken');
+
+    const defaultHeaders: Record<string, string> = token
+        ? { Authorization: `Bearer ${token}` }
+        : {}
+
+    const combinedHeaders = {
+        ...defaultHeaders,
+        ...headers,
+    }
+
     try {
         const response = await axios({
             method,
             url,
-            headers,
+            headers: combinedHeaders,
             data: method !== 'get' ? data : undefined,
             params: method === 'get' ? params || data : undefined,
             withCredentials : true
