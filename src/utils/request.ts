@@ -22,9 +22,6 @@ export const request = async <T = any>(options: RequestOptions): Promise<T> => {
         headers['Authorization'] = `Bearer ${token}`;
     }
 
-
-    const token = localStorage.getItem('accessToken');
-
     const defaultHeaders: Record<string, string> = token
         ? { Authorization: `Bearer ${token}` }
         : {}

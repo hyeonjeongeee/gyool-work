@@ -90,15 +90,14 @@
         });
 
     if (result && result.token) {
-      // ✅ 토큰 저장
-      // 로그인 성공 처리 (예: 토큰 저장, 페이지 이동 등)
+      // 로그인 성공 처리
       useTokenStore().setAccessToken(result.token);
       useUserInfo().setUser(result.user);
 
       if(result.user.companyId !== null) {
-        router.push({ name: 'Home' })
+        await router.push({name: 'home'})
       }else {
-        router.push({ name: 'CompanySearch' })
+        await router.push({name: 'companySearch'})
       }
 
     } else {
