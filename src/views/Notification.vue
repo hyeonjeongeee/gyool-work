@@ -1,12 +1,16 @@
 <template>
   <div class="notification">
-    <h1>This is an notification page</h1>
-    <button @click="tokenTest">request Test</button>
+    <Calendar class="calenderDiv"/>
+
+    <CalModal
+        v-if="isModalOpen"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import {request} from "@/utils/request.ts";
+import Calendar from "@/component/Calendar.vue"
 
 const tokenTest = async () => {
   const result = await request({method :'get', url:'/test'});
@@ -17,6 +21,11 @@ const tokenTest = async () => {
 </script>
 
 <style>
-
+.notification{
+  height: 100%;
+}
+.calenderDiv{
+  height: 100%
+}
 </style>
 

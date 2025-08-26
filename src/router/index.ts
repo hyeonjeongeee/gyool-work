@@ -89,7 +89,6 @@ router.beforeEach(async (to, from, next)=>{
   const userInfo = useUserInfo();
   const isAuthenticated  =await token.isTokenExpired();
 
-  console.log(isAuthenticated+">sdF.dsf,kdsf;ldskmjf");
   //권한이 필요한 페이지를 요청한경우
   if(to.meta.requiresAuth){
       //토큰 만료시간이 유효하면 next

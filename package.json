@@ -11,6 +11,10 @@
     "postbuild": "node scripts/copy-to-spring.cjs"
   },
   "dependencies": {
+    "@fullcalendar/core": "^6.1.18",
+    "@fullcalendar/daygrid": "^6.1.18",
+    "@fullcalendar/interaction": "^6.1.18",
+    "@fullcalendar/vue3": "^6.1.18",
     "@vuepic/vue-datepicker": "^11.0.2",
     "axios": "^1.9.0",
     "date-fns": "^4.1.0",
